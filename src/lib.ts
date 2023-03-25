@@ -8,11 +8,10 @@ import { Signer, Wallet, utils } from "ethers"
 import type { SignatureWithSigner } from "./types"
 
 export async function createSignature(
-  key: string,
+  wallet: Wallet,
   address: string,
   num: number
 ): Promise<SignatureWithSigner> {
-  const wallet = new Wallet(key)
   const msg = createMessage(address, num)
   const s = await sign(wallet, msg)
 

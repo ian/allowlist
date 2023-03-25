@@ -134,7 +134,6 @@ abstract contract AllowList is SharedSigners {
             return (false, "Exceeds Max Per Wallet");
         }
 
-        // return _validateSignature(_address, _count, _signature, _nonce);
         return (true, "");
     }
 

@@ -2,7 +2,7 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import { ethers, Wallet } from "ethers";
 
-import { createMessage, sign } from "./lib";
+import { createMessage, createSignature, sign } from "./lib";
 import { Command } from "commander";
 import { readFile, writeCSV, writeJSON } from "./util";
 import { getSigner } from "./crypto";
@@ -87,19 +87,15 @@ program
     console.log("Dupes: ", dupes.length);
 
     const signatures = {};
-
-    const signer = await getSigner(mnemonic, "m/44'/0'/0'");
+    const path = "m/44'/0'/0'" // eventually we'll make this iterative over the list of mint groups
+    const signer = await getSigner(mnemonic, path);
 
     for (const entry of deduped) {
       const { address, allocation } = entry
-      const msg = createMessage(address, allocation);
-      const sig = await sign(signer, msg);
       const key = ethers.utils.keccak256(ethers.utils.getAddress(address));
+      const sig = await createSignature(signer, address, allocation)
 
-      signatures[key] = {
-        s: sig,
-        n: allocation,
-      };
+      signatures[key] = sig;
     }
 
     console.log()
