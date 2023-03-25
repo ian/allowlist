@@ -15,6 +15,22 @@
   },
   "author": "Ian <i@ianh.xyz>",
   "license": "MIT",
+  "type": "module",
+  "types": "./dist/cli.d.ts",
+  "exports": {
+    ".": {
+      "module": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "contracts"
+  ],
+  "bin": {
+    "allowlist": "./dist/cli.mjs"
+  },
   "keywords": [
     "allowlist",
     "ethers",
