@@ -1,0 +1,4 @@
+{
+  "watch": ["src/**/*", "contracts/**/*", "test/**/*"],
+  "ext": "js,json,sol,ts"
+}

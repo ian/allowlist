@@ -1,0 +1,4 @@
+mint_wallet_address,date,ip address hash,twitter username,twitter id,twitter follower count,twitter account created,discord username,discord id,wallet balance at registration,holding_wallet_address,verified_tokens,verified_token_count,collab,winner,waitlist,disqualified,custom field
+0x0000000000000000000000000000000000000001,2023-03-25 17:16:56.962800+00:00,None,,,,,,,,,,0,,False,True,False,
+0x0000000000000000000000000000000000000002,2023-03-25 17:16:56.981510+00:00,None,,,,,,,,,,0,,True,False,False,
+0x0000000000000000000000000000000000000003,2023-03-25 17:16:57.017813+00:00,None,,,,,,,,,,0,,False,False,False,
