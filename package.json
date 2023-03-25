@@ -1,8 +1,7 @@
 {
   "name": "@allowlist/dev",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The easiest and most-flexible library for adding Allowlists to Solidity smart contracts.",
-  "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf ./cache ./dist ./out",
     "build": "yarn build:js && yarn build:sol",
@@ -16,7 +15,8 @@
   "author": "Ian <i@ianh.xyz>",
   "license": "MIT",
   "type": "module",
-  "types": "./dist/cli.d.ts",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "module": "./dist/index.cjs",
