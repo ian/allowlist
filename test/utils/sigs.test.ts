@@ -1,4 +1,4 @@
-import { createMessage, recoverAddress, sign } from "../../src"
+import { createMessage, recoverAddress, sign } from "../../src/utils/sigs"
 import { ethers } from "ethers"
 import { it, describe } from "vitest"
 import * as assert from "node:assert/strict"

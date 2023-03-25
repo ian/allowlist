@@ -5,7 +5,7 @@
 // the secret to getting this working was this post: https://blog.cabala.co/how-to-verify-off-chain-results-and-whitelist-with-ecdsa-in-solidity-using-openzeppelin-ethers-js-ba4c85521711
 
 import { Signer, Wallet, utils } from "ethers"
-import type { SignatureWithSigner } from "./types"
+import type { SignatureWithSigner } from "../types"
 
 export async function createSignature(
   wallet: Wallet,

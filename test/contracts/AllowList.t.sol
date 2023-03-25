@@ -6,7 +6,7 @@ import "forge-std/Test.sol";
 
 import "erc721a/contracts/ERC721A.sol";
 
-import "../src/AllowList.sol";
+import "../../contracts/AllowList.sol";
 
 contract AllowListTest is Test {
     AllowListMock public mock;
@@ -41,12 +41,12 @@ contract AllowListTest is Test {
     }
 
     function testMint() public {
-        assertEq(mock.listTotal(signer), 0);
+        assertEq(mock.allowListTotal(signer), 0);
 
         assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
 
         mock.useSignature{value: 1 ether}(minter, signature, nonce, 1);
-        assertEq(mock.listTotal(signer), 1);
+        assertEq(mock.allowListTotal(signer), 1);
     }
 
     function testAddAllowList() public {
@@ -187,16 +187,16 @@ contract AllowListTest is Test {
     function testPayment() public {
         vm.expectRevert("Insufficient Payment");
         mock.useSignature{value: 0.2 ether}(minter, signature, nonce, 1);
-        assertEq(mock.listTotal(signer), 0);
+        assertEq(mock.allowListTotal(signer), 0);
 
         mock.useSignature{value: 1 ether}(minter, signature, nonce, 1);
-        assertEq(mock.listTotal(signer), 1);
+        assertEq(mock.allowListTotal(signer), 1);
     }
 }
 
 contract AllowListMock is AllowList {
     constructor(AllowList.ListConfig memory list) {
-        _addList(
+        _addAllowList(
             list.signer,
             list.mintPrice,
             list.startTime,
@@ -236,7 +236,7 @@ contract AllowListMock is AllowList {
     }
 
     function addAllowList(AllowList.ListConfig memory _list) external {
-        _addList(
+        _addAllowList(
             _list.signer,
             _list.mintPrice,
             _list.startTime,
@@ -246,7 +246,7 @@ contract AllowListMock is AllowList {
     }
 
     function removeAllowList(address signer) external {
-        _removeList(signer);
+        _removeAllowList(signer);
     }
 
     function listExists(address signer) external view returns (bool) {

@@ -4,7 +4,7 @@ pragma solidity >=0.8.9;
 import "forge-std/Test.sol";
 import "erc721a/contracts/ERC721A.sol";
 
-import "../src/Timing.sol";
+import "../../contracts/Timing.sol";
 
 contract TimingTest is Test {
     using Timing for uint256;

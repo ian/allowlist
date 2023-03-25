@@ -1,11 +1,10 @@
+import { Command } from "commander";
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { ethers, Wallet } from "ethers";
 
-import { createMessage, createSignature, sign } from "./lib";
-import { Command } from "commander";
-import { readFile, writeCSV, writeJSON } from "./util";
-import { getSigner } from "./crypto";
+import { createMessage, createSignature, sign } from "./utils/sigs";
+import { readFile, writeCSV, writeJSON } from "./utils/fs";
 import { Entry } from "./types";
 
 const program = new Command();
@@ -21,6 +20,7 @@ program
   .description("Creates a random BIP39 key")
   .action(async () => {
     const wallet = Wallet.createRandom();
+
     console.log("BIP39 Mnemonic Generated:");
     console.log();
     console.log(chalk.greenBright(wallet.mnemonic.phrase));
@@ -87,7 +87,8 @@ program
     console.log("Dupes: ", dupes.length);
 
     const signatures = {};
-    const path = "m/44'/0'/0'" // eventually we'll make this iterative over the list of mint groups
+    // eventually we'll make this iterative over the list of mint groups
+    const path = "m/44'/0'/0'" 
     const signer = await getSigner(mnemonic, path);
 
     for (const entry of deduped) {
@@ -100,12 +101,16 @@ program
 
     console.log()
     console.log("Writing", deduped.length, "addresses to signatures.json");
-    await writeJSON(process.cwd() + "/signatures.json", signatures);
+    await writeJSON(process.cwd() + "/allowlist.json", signatures);
 
     if (errors.length > 0) {
       console.log("Writing", errors.length, "errors to errors.csv");
       await writeCSV(process.cwd() + "/errors.csv", errors);
     }
   });
+
+async function getSigner(mnemonic:string, path:string) {
+  return Wallet.fromMnemonic(mnemonic, path)
+}
 
 program.parse();

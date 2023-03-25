@@ -6,7 +6,7 @@ import "forge-std/Test.sol";
 
 import "erc721a/contracts/ERC721A.sol";
 
-import "../src/SharedSigners.sol";
+import "../../contracts/SharedSigners.sol";
 
 contract SharedSignersTest is Test {
     SharedSignersMock mock;
