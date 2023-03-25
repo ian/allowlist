@@ -58,7 +58,7 @@ contract MyNFT is ERC721A, AllowList {
         );
     }
 
-		function allowListMint(
+    function allowListMint(
         address _address,
         uint256 _count,
         bytes calldata _signature,
@@ -91,29 +91,29 @@ import { useSignature } from "@allowlist/dev"
 const signatures = require("path/to/allowlist.json")
  
 function MyComponent() {
-	const contract = useContract({
+  const contract = useContract({
     address: '0x...',
-    abi: [... your abi ...],
+    abi: [ /* ... your abi ... */ ] 
   })
-	const { address } = useAccount()
-	const sig = useSignature(address)
-	
-	const handleMint = () => {
-		if (!sig) return
-		const amountToMint = 1 // or mint the full allotment of sig.n
-		contract
-			.allowListMint(address, amountToMint, sig.s, sig.n)
-			.then((tx) => tx.wait())
-			.then((receipt) => {
-				console.log("Mint Successful, tx: ", receipt.transactionHash)
-			})
-			.catch((err) => {
-				console.error("Mint Failed", err)
-			})
-	}
+  const { address } = useAccount()
+  const sig = useSignature(address)
+  
+  const handleMint = () => {
+    if (!sig) return
+    const amountToMint = 1 // or mint the full allotment of sig.n
+    contract
+      .allowListMint(address, amountToMint, sig.s, sig.n)
+      .then((tx) => tx.wait())
+      .then((receipt) => {
+        console.log("Mint Successful, tx: ", receipt.transactionHash)
+      })
+      .catch((err) => {
+        console.error("Mint Failed", err)
+      })
+  }
 
-	return <>
-		<button onClick={handleMint}>Mint</button>
-	</>
+  return <>
+    <button onClick={handleMint}>Mint</button>
+  </>
 }
 ```
