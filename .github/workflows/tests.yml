@@ -9,9 +9,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --production=false
 
-      - name: Build
-        run: yarn build
-
       # - name: Install rust
       #   uses: actions-rs/toolchain@v1
       #   with:
@@ -24,6 +21,9 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+
+      - name: Build
+        run: yarn build
 
       - name: Launch Anvil
         run: FORK_URL=${{ secrets.FORK_URL }} yarn anvil &
