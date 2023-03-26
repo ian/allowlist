@@ -63,16 +63,11 @@ contract MyNFT is ERC721A, AllowList {
         uint256 _count,
         bytes calldata _signature,
         uint256 _nonce
-    ) external payable useSignature(_signature, ) {
-        (bool canMint, string memory reason) = _validateSignature(
-            _address,
-            _count,
-            _mintCount(_address),
-            _signature,
-            _nonce
-        );
-        require(canMint, reason);
-        _useSignature(_address, _count, _signature, _nonce);
+    ) 
+      external 
+      payable 
+      useSignature(_address, _count, _signature, _nonce) 
+    {
         _mint(_address, _count);
     }
 }

@@ -45,7 +45,7 @@ contract AllowListTest is Test {
 
         assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
 
-        mock.useSignature{value: 1 ether}(minter, signature, nonce, 1);
+        mock.mint{value: 1 ether}(minter, 1, signature, nonce);
         assertEq(mock.allowListTotal(signer), 1);
     }
 
@@ -92,7 +92,7 @@ contract AllowListTest is Test {
     function testMultipleSignatureUse() public {
         assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
 
-        mock.useSignature{value: 1 ether}(minter, signature, nonce, 1);
+        mock.mint{value: 1 ether}(minter, 1, signature, nonce);
 
         vm.prank(minter);
         assertEq(mock.isValidSignature(minter, signature, nonce, 1), false);
@@ -186,16 +186,16 @@ contract AllowListTest is Test {
 
     function testPayment() public {
         vm.expectRevert("Insufficient Payment");
-        mock.useSignature{value: 0.2 ether}(minter, signature, nonce, 1);
+        mock.mint{value: 0.2 ether}(minter, 1, signature, nonce);
         assertEq(mock.allowListTotal(signer), 0);
 
-        mock.useSignature{value: 1 ether}(minter, signature, nonce, 1);
+        mock.mint{value: 1 ether}(minter, 1, signature, nonce);
         assertEq(mock.allowListTotal(signer), 1);
     }
 }
 
-contract AllowListMock is AllowList {
-    constructor(AllowList.ListConfig memory list) {
+contract AllowListMock is ERC721A, AllowList {
+    constructor(AllowList.ListConfig memory list) ERC721A("Test", "TEST") {
         _addAllowList(
             list.signer,
             list.mintPrice,
@@ -203,6 +203,10 @@ contract AllowListMock is AllowList {
             list.endTime,
             list.maxPerWallet
         );
+    }
+
+    function balanceOf(address _owner) public view override(ERC721A, AllowList) returns (uint256) {
+        return ERC721A.balanceOf(_owner);
     }
 
     function isValidSignature(
@@ -226,13 +230,13 @@ contract AllowListMock is AllowList {
             _validateSignature(_address, _count, _minted, _signature, _nonce);
     }
 
-    function useSignature(
+    function mint(
         address to,
+        uint256 count,
         bytes calldata signature,
-        uint256 nonce,
-        uint256 count
-    ) external payable {
-        _useSignature(to, count, signature, nonce);
+        uint256 nonce
+    ) external payable useSignature(to, count, signature, nonce) {
+        _mint(to, count);   
     }
 
     function addAllowList(AllowList.ListConfig memory _list) external {

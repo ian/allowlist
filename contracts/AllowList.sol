@@ -33,6 +33,23 @@ abstract contract AllowList is SharedSigners {
     mapping(address => List) public allowLists;
     mapping(bytes32 => uint256) internal usedSignatures;
 
+    // In order to check max minting per wallet, an implementing contact 
+    // must define this function.
+    function balanceOf(address owner) public view virtual returns (uint256);
+
+    /**
+     * @notice useSignature modifier
+     */
+    modifier useSignature(
+        address _address,
+        uint256 _count,
+        bytes calldata _signature,
+        uint256 _nonce
+    ) {
+        _useSignature(_address, _count, _signature, _nonce);
+        _;
+    }
+
     /**
      * @notice Add a list.
      */
@@ -151,6 +168,16 @@ abstract contract AllowList is SharedSigners {
         bytes calldata _signature,
         uint256 _nonce
     ) internal {
+        (bool canMint, string memory reason) = _validateSignature(
+            _address,
+            _count,
+            balanceOf(_address),
+            _signature,
+            _nonce
+        );
+
+        require(canMint, reason);
+
         bytes32 message = _createMessage(_address, _nonce);
         address signer = _recoverSigner(_signature, _address, _nonce);
 
