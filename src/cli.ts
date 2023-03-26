@@ -6,7 +6,7 @@ import inquirer from "inquirer";
 import { Wallet } from "ethers";
 
 import { gen } from "cli/gen";
-import { version } from "../package.json"
+import { version } from "../package.json";
 
 const program = new Command();
 program
@@ -35,6 +35,7 @@ program
   .command("gen")
   .description("Generates a signature file for the given CSV file.")
   .argument("<files...>", "CSV files to process")
+  .option("-o, --output <output>", "Output file name", "allowlist.json")
   .action(async (files, opts) => {
     const { mnemonic } = await inquirer.prompt([
       {
@@ -44,8 +45,7 @@ program
       },
     ]);
 
-    await gen(mnemonic, files);
+    await gen({ mnemonic, files, outputFile: opts.output });
   });
-
 
 program.parse();
