@@ -11,7 +11,7 @@
     "test": "yarn test:js && yarn test:sol",
     "test:js": "CI=true vitest",
     "test:sol": "forge test -vvv --match-path \"test/contracts/**\"",
-    "testdata": "tsx scripts/testdata.ts"
+    "testdata": "tsx test/testdata.ts"
   },
   "author": "Ian <i@ianh.xyz>",
   "license": "MIT",
