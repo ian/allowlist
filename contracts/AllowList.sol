@@ -102,6 +102,30 @@ abstract contract AllowList is SharedSigners {
     }
 
     /**
+     * @dev can the address mint with signature and nonce?
+     * @param _address the address the signature was assigned to
+     * @param _count how many tokens to mint
+     * @param _signature the signature by the allowance signer wallet
+     * @param _nonce the nonce associated to this allowance
+     * @return true / false
+     */
+    function canUseSignature(
+        address _address,
+        uint256 _count,
+        bytes calldata _signature,
+        uint256 _nonce
+    ) external view returns (bool) {
+        (bool canMint, ) = _validateSignature(
+            _address,
+            _count,
+            balanceOf(_address),
+            _signature,
+            _nonce
+        );
+        return canMint;
+    }
+
+    /**
      * @notice Check address ability to mint, with max per wallet check
      * @param _address the address the signature was assigned to
      * @param _count how many tokens to mint

@@ -43,7 +43,7 @@ contract AllowListTest is Test {
     function testMint() public {
         assertEq(mock.allowListTotal(signer), 0);
 
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
 
         mock.mint{value: 1 ether}(minter, 1, signature, nonce);
         assertEq(mock.allowListTotal(signer), 1);
@@ -67,35 +67,35 @@ contract AllowListTest is Test {
 
     function testRemoveAllowList() public {
         assertEq(mock.listExists(signer), true);
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
 
         mock.removeAllowList(signer);
 
         assertEq(mock.listExists(signer), false);
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), false);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), false);
     }
 
     function testWrongMinterAddress() public {
         address fake_addy = address(0x1234567890123456789012345678901234567890);
 
         vm.prank(fake_addy);
-        assertEq(mock.isValidSignature(fake_addy, signature, nonce, 1), false);
+        assertEq(mock.canUseSignature(fake_addy, 1, signature, nonce), false);
     }
 
     function testWrongSignature() public {
         bytes
             memory fake_sig = hex"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
-        assertEq(mock.isValidSignature(minter, fake_sig, nonce, 1), false);
+        assertEq(mock.canUseSignature(minter, 1, fake_sig, nonce), false);
     }
 
     function testMultipleSignatureUse() public {
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
 
         mock.mint{value: 1 ether}(minter, 1, signature, nonce);
 
         vm.prank(minter);
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), false);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), false);
     }
 
     function testMaxPerWallet() public {
@@ -116,22 +116,22 @@ contract AllowListTest is Test {
             })
         );
 
-        assertEq(mock.isValidSignature(_minter, _sig, _n, 3), false);
-        assertEq(mock.isValidSignature(_minter, _sig, _n, 2), true);
-        assertEq(mock.isValidSignature(_minter, _sig, _n, 1), true);
+        assertEq(mock.canUseSignature(_minter, 3, _sig, _n), false);
+        assertEq(mock.canUseSignature(_minter, 2, _sig, _n), true);
+        assertEq(mock.canUseSignature(_minter, 1, _sig, _n), true);
     }
 
     function testMaxPerWalletUnlimited() public {
-        address signer = 0x6c61e3E294237f02845dF0e94885f03e4dee671B;
-        address minter = 0xF5ba38c54e01e6688b80d43385114Db82644c3D7;
+        address _signer = 0x6c61e3E294237f02845dF0e94885f03e4dee671B;
+        address _minter = 0xF5ba38c54e01e6688b80d43385114Db82644c3D7;
         bytes
-            memory sig = hex"e390cdefb6a5e09a6999f5ea83c15ab28bc8dc83dc1ff39a9585c275df2d86117bd06062f5d348c01ba832e556d3005783b1cd3d5a1cc1e5c65ddb47fcb04f371c";
-        uint256 nonce = 0;
+            memory _sig = hex"e390cdefb6a5e09a6999f5ea83c15ab28bc8dc83dc1ff39a9585c275df2d86117bd06062f5d348c01ba832e556d3005783b1cd3d5a1cc1e5c65ddb47fcb04f371c";
+        uint256 _nonce = 0;
 
         // Test 0 = unlimited
         mock.addAllowList(
             AllowList.ListConfig({
-                signer: signer,
+                signer: _signer,
                 mintPrice: 1 ether,
                 startTime: 60,
                 endTime: 100,
@@ -139,17 +139,17 @@ contract AllowListTest is Test {
             })
         );
 
-        (bool success, string memory reason) = mock.validateSignature(
-            minter,
-            100,
-            0,
-            sig,
-            nonce
-        );
+        // (bool success, string memory reason) = mock.validateSignature(
+        //     _minter,
+        //     100,
+        //     0,
+        //     _sig,
+        //     _nonce
+        // );
 
         assertEq(
             // Generated minter with 0 nonce signature
-            mock.isValidSignature(minter, sig, nonce, 100),
+            mock.canUseSignature(_minter, 100, _sig, _nonce),
             true
         );
     }
@@ -157,19 +157,19 @@ contract AllowListTest is Test {
     function testStartTime() public {
         rewind(60);
 
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), false);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), false);
 
         skip(60);
 
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
     }
 
     function testEndTime() public {
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
 
         skip(40);
 
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), false);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), false);
 
         mock.addAllowList(
             AllowList.ListConfig({
@@ -181,7 +181,7 @@ contract AllowListTest is Test {
             })
         );
 
-        assertEq(mock.isValidSignature(minter, signature, nonce, 1), true);
+        assertEq(mock.canUseSignature(minter, 1, signature, nonce), true);
     }
 
     function testPayment() public {
@@ -209,15 +209,15 @@ contract AllowListMock is ERC721A, AllowList {
         return ERC721A.balanceOf(_owner);
     }
 
-    function isValidSignature(
-        address to,
-        bytes calldata signature,
-        uint256 nonce,
-        uint256 count
-    ) external view returns (bool) {
-        (bool canMint, ) = _validateSignature(to, count, 0, signature, nonce);
-        return canMint;
-    }
+    // function canUseSignature(
+    //     address to,
+    //     bytes calldata signature,
+    //     uint256 nonce,
+    //     uint256 count
+    // ) external view returns (bool) {
+    //     (bool canMint, ) = _validateSignature(to, count, 0, signature, nonce);
+    //     return canMint;
+    // }
 
     function validateSignature(
         address _address,

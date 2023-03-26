@@ -10,7 +10,8 @@
     "dev": "nodemon --exec \"yarn build\"",
     "test": "yarn test:js && yarn test:sol",
     "test:js": "CI=true vitest",
-    "test:sol": "forge test -vvv --match-path \"test/contracts/**\""
+    "test:sol": "forge test -vvv --match-path \"test/contracts/**\"",
+    "testdata": "tsx scripts/testdata.ts"
   },
   "author": "Ian <i@ianh.xyz>",
   "license": "MIT",
@@ -25,8 +26,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist",
-    "contracts"
+    "contracts",
+    "dist"
   ],
   "bin": {
     "allowlist": "./dist/cli.js"
