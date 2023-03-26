@@ -36,9 +36,9 @@ Note - if you need to generate a BIP39 mnemonic, use:
 allowlist bip39
 ```
 
-## 3. Update your Smart Contract
+## 3. Add functions and modifiers to your Smart Contract
 
-Add the mint groups to your contract, and use the allowlist helpers for your mint function:
+Add the mint groups to your contract, and use the allowlist helpers for your mint function. 
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
