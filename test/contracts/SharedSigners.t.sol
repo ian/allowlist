@@ -34,7 +34,7 @@ contract SharedSignersTest is Test {
 contract SharedSignersMock is SharedSigners {
     function createMessage(address _address, uint256 _nonce)
         external
-        view
+        pure
         returns (bytes32)
     {
         return _createMessage(_address, _nonce);
