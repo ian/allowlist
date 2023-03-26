@@ -50,11 +50,11 @@ import "erc721a/contracts/ERC721A.sol";
 contract MyNFT is ERC721A, AllowList {
     constructor() ERC721A("https://allowlist.dev Test Contract", "TEST") {
         _addAllowList(
-            address(0x12345...), # group address
-            ether(0.1),          # the mint price
-            0,                   # start timestamp
-            0,                   # end timestamp
-            1                    # max per wallet
+            address(0x12345...), // group address
+            ether(0.1),          // the mint price
+            0,                   // start timestamp
+            0,                   // end timestamp
+            1                    // max per wallet
         );
     }
 

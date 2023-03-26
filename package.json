@@ -29,7 +29,7 @@
     "contracts"
   ],
   "bin": {
-    "allowlist": "./dist/cli.mjs"
+    "allowlist": "./dist/cli.js"
   },
   "keywords": [
     "allowlist",
