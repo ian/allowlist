@@ -11,3 +11,7 @@ export type Signature = {
 export type SignatureWithSigner = {
   x: string;
 } & Signature;
+
+export type SignaturesJSON = {
+  [key: string]: SignatureWithSigner
+}

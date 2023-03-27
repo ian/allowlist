@@ -69,25 +69,6 @@ abstract contract AllowList is SharedSigners {
     }
 
     /**
-     * @notice Add a list.
-     */
-    function _addAllowList(AllowList.ListConfig memory _list) internal {
-        _addAllowList(
-            _list.signer,
-            _list.mintPrice,
-            _list.startTime,
-            _list.endTime,
-            _list.maxPerWallet
-        );
-    }
-
-    function _addAllowLists(AllowList.ListConfig[] memory _lists) internal {
-        for (uint256 i = 0; i < _lists.length; i++) {
-            _addAllowList(_lists[i]);
-        }
-    }
-
-    /**
      * @notice Remove a list.
      */
     function _removeAllowList(address signer) internal {
