@@ -26,9 +26,6 @@ Generated the following allowlist groups:
 
 Group:   0x12345...
 Wallets: 1234
-
-Group:   0x23456...
-Wallets: 2345
 ```
 
 Note - if you need to generate a BIP39 mnemonic, use: 
@@ -55,13 +52,6 @@ contract MyNFT is ERC721A, AllowList {
             1672552800,          // start timestamp
             1675231200,          // end timestamp
             1                    // max per wallet
-        );
-        _addAllowList(
-            address(0x23456...), // group address
-            0.0 ether,           // the mint price
-            0,                   // start timestamp, 0 is anytime
-            0,                   // end timestamp, 0 is no end time
-            0                    // max per wallet, 0 is unlimited
         );
     }
 
