@@ -85,12 +85,7 @@ export async function gen({
   });
 }
 
-async function genSigs(
-  data: { [key: string]: any }[],
-  signer: Signer
-  // mnemonic: string,
-  // keyPath: string
-) {
+async function genSigs(data: { [key: string]: any }[], signer: Wallet) {
   const entries: {
     address: string;
     num: number;
@@ -105,16 +100,16 @@ async function genSigs(
       a.wallet || // basic
       a.mint_wallet_address; // premint
 
-    const num = a.allocation || 1;
+    const num = parseInt((a.allocation || a.amount || a.count || 1).toString());
 
     if (!addy || addy === "") continue;
     try {
       const address = ethers.utils.getAddress(addy);
-      const sig = await createSignature(signer, address, parseInt(num));
+      const sig = await createSignature(signer, address, num);
 
       entries.push({
         address: addy,
-        num: parseInt(num),
+        num,
         sig,
       });
     } catch (err) {

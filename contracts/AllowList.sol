@@ -33,7 +33,7 @@ abstract contract AllowList is SharedSigners {
     mapping(address => List) public allowLists;
     mapping(bytes32 => uint256) internal usedSignatures;
 
-    // In order to check max minting per wallet, an implementing contact 
+    // In order to check max minting per wallet, an implementing contact
     // must define this function.
     function balanceOf(address owner) public view virtual returns (uint256);
 
@@ -199,11 +199,10 @@ abstract contract AllowList is SharedSigners {
      * @param _nonce the corresponding nonces
      * @return message the messages to sign
      */
-    function createMessage(address _address, uint256 _nonce)
-        public
-        pure
-        returns (bytes32)
-    {
+    function createMessage(
+        address _address,
+        uint256 _nonce
+    ) public pure returns (bytes32) {
         return _createMessage(_address, _nonce);
     }
 }
