@@ -10,15 +10,15 @@ export const readFile = (name: string) => {
   }).data;
 };
 
-export const writeJSON = (filename:string, json) => {
+export const writeJSON = (filename: string, json) => {
   return fs.writeFileSync(
     filename,
-    JSON.stringify(json)
-    // JSON.stringify(json, null, 2)
+    // JSON.stringify(json)
+    JSON.stringify(json, null, 2)
   );
-}
+};
 
-export const writeCSV = (filename:string, data) => {
+export const writeCSV = (filename: string, data) => {
   return createObjectCsvWriter({
     path: filename,
     header: [
@@ -26,7 +26,7 @@ export const writeCSV = (filename:string, data) => {
       { id: "error", title: "Error" },
     ],
   }).writeRecords(data); // returns a promise
-}
+};
 
 export const stringToUint8Array = (str: string) => {
   const bytes = new Uint8Array(str.length);
@@ -34,4 +34,4 @@ export const stringToUint8Array = (str: string) => {
     bytes[i] = str.charCodeAt(i);
   }
   return bytes;
-}
+};

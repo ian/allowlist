@@ -1,6 +1,7 @@
-export type Entry = { 
-  address: string; 
-  allocation: number
+export type Entry = {
+  address: string;
+  num: number;
+  sig: SignatureWithSigner;
 };
 
 export type Signature = {
@@ -13,5 +14,5 @@ export type SignatureWithSigner = {
 } & Signature;
 
 export type SignaturesJSON = {
-  [key: string]: SignatureWithSigner
-}
+  [key: string]: SignatureWithSigner;
+};
