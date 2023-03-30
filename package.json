@@ -1,6 +1,6 @@
 {
   "name": "@allowlist/dev",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The easiest and most-flexible library for adding Allowlists to Solidity smart contracts.",
   "scripts": {
     "clean": "rm -rf ./cache ./dist ./out",
